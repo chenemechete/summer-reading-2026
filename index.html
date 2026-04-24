@@ -1170,6 +1170,26 @@ body {
       <div class="tip-label" style="color: var(--green)">✓ Always say instead</div>
       <div class="tip-text">"Look at the <strong style='color:var(--green)'>letters</strong>. What sounds do you see? Let's tap it out."</div>
     </div>
+
+    <div style="margin-top:32px">
+      <div class="section-label" style="margin-bottom:16px">Full Book List</div>
+
+      <div style="margin-bottom:12px; font-size:12px; color:var(--ink-faint); line-height:1.6;">
+        All books used across the 8-week program. She reads decodables herself; you read the read-alouds to her.
+      </div>
+
+      <!-- SHE READS -->
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; margin-top:20px;">She Reads Herself</div>
+      <div class="books-row" id="allBooksChild"></div>
+
+      <!-- YOU READ ALOUD -->
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--green); margin-bottom:10px; margin-top:24px;">You Read Aloud to Her</div>
+      <div class="books-row" id="allBooksAloud"></div>
+
+      <!-- APPS -->
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; margin-top:24px;">Apps &amp; Digital Tools</div>
+      <div class="books-row" id="allBooksApps"></div>
+    </div>
   </div>
 
   <!-- BOTTOM NAV -->
@@ -1442,6 +1462,7 @@ document.querySelectorAll('[data-page]').forEach(btn => {
     const page = btn.dataset.page;
     showPage(page);
     if (page === 'tracker') renderTracker();
+    if (page === 'strategies') renderAllBooks();
   });
 });
 
@@ -1784,10 +1805,73 @@ function setCurrentWeek(num) {
   renderWeeks();
 }
 
+// ── BOOK LIST (strategies tab) ───────────────────────────────────────────────
+const ALL_BOOKS = {
+  child: [
+    { title: "Bob Books Set 3 & 4", weeks: "Week 1", why: "Precisely controlled phonics. Each book targets one pattern. Short enough to finish in one sitting.", where: "Amazon (~$15/set) or library", emoji: "📗" },
+    { title: "Elephant & Piggie (any Mo Willems)", weeks: "Weeks 1, 2, 7", why: "Funny dialogue, high sight word coverage. Great for fluency — she'll want to re-read it.", where: "Library or Amazon (~$5)", emoji: "📘" },
+    { title: "Frog and Toad (Arnold Lobel)", weeks: "Weeks 3, 6", why: "Gentle humor, manageable complexity. Perfect for 1-minute fluency timing.", where: "Library or Amazon (~$5 used)", emoji: "📗" },
+    { title: "I Can Read! Pete the Cat", weeks: "Week 4", why: "Cats + humor + very decodable text. She'll want to re-read it — that builds fluency automatically.", where: "Library or Amazon (~$5)", emoji: "🐱" },
+    { title: "Biscuit Series", weeks: "Week 4", why: "Dog stories, short sentences, controlled vocabulary. Great for confidence on harder phonics days.", where: "Library or Amazon (~$4 used)", emoji: "🐕" },
+    { title: "Hi! Fly Guy (Tedd Arnold)", weeks: "Week 5", why: "Silly humor, bugs, simple decodable text. A universal reluctant-reader hit.", where: "Library or Amazon (~$5)", emoji: "🦟" },
+  ],
+  aloud: [
+    { title: "Pokémon Graphic Novel (Viz Media)", weeks: "Week 1+", why: "Her passion = maximum engagement. You read it, she follows along and asks questions.", where: "Amazon (~$8), library, or Target", emoji: "⭐" },
+    { title: "Magic Tree House #1 — Dinosaurs Before Dark", weeks: "Weeks 2, 5", why: "Adventure + animals + fantasy. Rich vocabulary. Great for prediction questions.", where: "Library or Amazon (~$5)", emoji: "📙" },
+    { title: "Bad Guys Series (Aaron Blabey)", weeks: "Weeks 2, 3, 7", why: "Hilarious, graphic-novel feel. High engagement for humor lovers. She'll beg for the next one.", where: "Library or Amazon (~$7)", emoji: "😂" },
+    { title: "Charlotte's Web (E.B. White)", weeks: "Weeks 3, 6", why: "Rich vocabulary, animals, friendship. Read one chapter at a time — emotional connection builds comprehension.", where: "Library or Amazon (~$6)", emoji: "🕷️" },
+    { title: "Diary of a Wimpy Kid (Book 1)", weeks: "Weeks 5, 7", why: "Laugh-out-loud funny. Discuss: 'What would YOU do?' Builds narrative comprehension naturally.", where: "Library or Amazon (~$6)", emoji: "📓" },
+    { title: "The One and Only Ivan (Katherine Applegate)", weeks: "Weeks 4, 8", why: "Gorilla narrator, humor + heart. Great for discussing character feelings and new vocabulary.", where: "Library or Amazon (~$7)", emoji: "🦍" },
+  ],
+  apps: [
+    { title: "Hooked on Phonics App", weeks: "Any week", why: "Structured phonics lessons with games. Aligned to Science of Reading. She can do 5–10 min independently.", where: "~$8/month (free trial available)", emoji: "📱" },
+    { title: "Starfall (starfall.com)", weeks: "Any week", why: "Free phonics games — vowel teams, blending, sight words. Works in any tablet browser.", where: "Free", emoji: "⭐" },
+    { title: "Epic! Books for Kids", weeks: "Any week", why: "Digital library of 40,000+ books. Has 'read-to-me' option. She can explore independently.", where: "Free during school year; ~$10/month summer", emoji: "📚" },
+    { title: "Teach Your Monster to Read", weeks: "Any week", why: "Phonics game that matches Science of Reading sequence. Engaging for 1st–2nd grade level.", where: "Free on browser; ~$5 on tablet", emoji: "👾" },
+  ]
+};
+
+function renderAllBooks() {
+  const makeCard = (book) => {
+    const el = document.createElement('div');
+    el.className = 'book-card';
+    const isChild = !!ALL_BOOKS.child.find(b => b.title === book.title);
+    const isApp   = !!ALL_BOOKS.apps.find(b => b.title === book.title);
+    const typeLabel = isApp ? 'App / Digital' : isChild ? 'She reads' : 'You read aloud';
+    const typeCls   = isApp ? 'she-reads' : isChild ? 'she-reads' : 'read-aloud';
+    const bgColor   = isApp ? 'var(--gold-bg)' : isChild ? 'var(--accent-bg)' : 'var(--green-bg)';
+    el.innerHTML = `
+      <div class="book-spine" style="background:${bgColor}">${book.emoji}</div>
+      <div class="book-info">
+        <div class="book-title">${book.title}</div>
+        <span class="book-type ${typeCls}">${typeLabel}</span>
+        <div style="font-size:11px; color:var(--ink-faint); margin-bottom:4px;">${book.weeks}</div>
+        <div class="book-why">${book.why}</div>
+        <div style="font-size:12px; color:var(--ink-faint); margin-top:6px;">📍 ${book.where}</div>
+      </div>
+    `;
+    return el;
+  };
+
+  const childEl = document.getElementById('allBooksChild');
+  const aloudEl = document.getElementById('allBooksAloud');
+  const appsEl  = document.getElementById('allBooksApps');
+  if (!childEl || !aloudEl || !appsEl) return;
+
+  childEl.innerHTML = '';
+  aloudEl.innerHTML = '';
+  appsEl.innerHTML  = '';
+
+  ALL_BOOKS.child.forEach(b => childEl.appendChild(makeCard(b)));
+  ALL_BOOKS.aloud.forEach(b => aloudEl.appendChild(makeCard(b)));
+  ALL_BOOKS.apps.forEach(b  => appsEl.appendChild(makeCard(b)));
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 renderToday();
 renderWeeks();
 renderStrategies();
+renderAllBooks();
 
 // Pre-render tracker silently
 setTimeout(() => {
