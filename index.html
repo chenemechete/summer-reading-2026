@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Reading · Rising 2nd Grade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:       #1a1612;
+  --ink-soft:  #6b635c;
+  --ink-faint: #b5aba3;
+  --paper:     #faf8f5;
+  --paper-warm:#f2ede6;
+  --paper-mid: #e8e1d8;
+  --accent:    #c4522a;
+  --accent-bg: #fbede7;
+  --green:     #3a7d5a;
+  --green-bg:  #e8f4ee;
+  --gold:      #a0772a;
+  --gold-bg:   #faf3e3;
+  --border:    #ddd7cf;
+
+  --radius-sm: 6px;
+  --radius:    12px;
+  --radius-lg: 20px;
+
+  --font-serif: 'DM Sans', system-ui, sans-serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ───────────────────────────────────────────────────── */
+.app { max-width: 480px; margin: 0 auto; min-height: 100vh; }
+
+/* ── HEADER ───────────────────────────────────────────────────── */
+.site-header {
+  padding: 28px 20px 0;
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+  z-index: 10;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.site-header.scrolled { border-color: var(--border); }
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.header-title { line-height: 1; }
+.header-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.header-name {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.header-sub {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+.overall-badge {
+  background: var(--paper-warm);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 12px;
+  text-align: center;
+  min-width: 64px;
+  flex-shrink: 0;
+}
+.badge-num {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--ink);
+  line-height: 1;
+}
+.badge-label {
+  font-size: 10px;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  display: block;
+}
+
+/* ── NAV TABS ─────────────────────────────────────────────────── */
+.nav-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin: 0 -20px;
+  padding: 0 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  background: none;
+  border: none;
+  padding: 10px 14px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.nav-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 14px; right: 14px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.2s var(--ease-out);
+  border-radius: 2px 2px 0 0;
+}
+.nav-tab.active { color: var(--ink); }
+.nav-tab.active::after { transform: scaleX(1); }
+
+/* ── PAGE CONTENT ─────────────────────────────────────────────── */
+.page { display: none; padding: 24px 20px 100px; }
+.page.active { display: block; animation: fadeUp 0.3s var(--ease-out); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TODAY VIEW ───────────────────────────────────────────────── */
+.today-week-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.today-focus {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.today-focus em { color: var(--accent); font-style: italic; }
+.today-meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+/* ── PROGRESS BAR ─────────────────────────────────────────────── */
+.week-progress {
+  margin-bottom: 28px;
+}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.progress-track {
+  height: 6px;
+  background: var(--paper-mid);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 100px;
+  transition: width 0.5s var(--ease-out);
+}
+
+/* ── SESSION STRUCTURE ────────────────────────────────────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+
+.session-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 28px;
+}
+
+.session-step {
+  display: flex;
+  gap: 0;
+  cursor: pointer;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: white;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.session-step:not(.completed):hover {
+  border-color: var(--ink-faint);
+}
+.session-step.completed {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+
+.step-check {
+  width: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-warm);
+  border-right: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.session-step.completed .step-check {
+  background: var(--green);
+  border-color: var(--green);
+}
+.check-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s var(--ease-out);
+  background: white;
+}
+.session-step.completed .check-icon {
+  background: white;
+  border-color: white;
+}
+.check-icon svg {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s var(--ease-out);
+}
+.session-step.completed .check-icon svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.step-body {
+  padding: 12px 14px;
+  flex: 1;
+}
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+.step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.session-step.completed .step-title { color: var(--green); }
+.step-time {
+  font-size: 11px;
+  color: var(--ink-faint);
+  background: var(--paper-warm);
+  padding: 2px 7px;
+  border-radius: 100px;
+}
+.session-step.completed .step-time {
+  background: var(--green-bg);
+  color: var(--green);
+}
+.step-desc {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+.session-step.completed .step-desc { color: var(--green); opacity: 0.8; }
+
+/* Step expand ── */
+.step-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
+}
+.step-detail.open { grid-template-rows: 1fr; }
+.step-detail-inner {
+  overflow: hidden;
+}
+.step-detail-content {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+  padding-top: 12px;
+}
+.session-step.completed .step-detail-content { border-color: var(--green); opacity: 0.9; }
+
+.step-activity-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.step-activity-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.step-activity-list li {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  padding-left: 16px;
+  position: relative;
+}
+.step-activity-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 11px;
+  top: 1px;
+}
+
+/* ── TIP CARD ─────────────────────────────────────────────────── */
+.tip-card {
+  background: var(--gold-bg);
+  border: 1px solid #e6d4aa;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+.tip-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.tip-text {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.tip-text strong { color: var(--gold); }
+
+/* ── BOOKS SECTION ────────────────────────────────────────────── */
+.books-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.book-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.book-spine {
+  width: 36px;
+  height: 52px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.book-info { flex: 1; }
+.book-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 3px;
+  line-height: 1.3;
+}
+.book-type {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 100px;
+  margin-bottom: 5px;
+}
+.book-type.she-reads { background: var(--accent-bg); color: var(--accent); }
+.book-type.read-aloud { background: var(--green-bg); color: var(--green); }
+.book-why {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ── WEEKS VIEW ───────────────────────────────────────────────── */
+.weeks-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.week-row {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: white;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.week-row:hover { border-color: var(--ink-faint); }
+.week-row.current { border-color: var(--accent); }
+.week-row.done { border-color: var(--green); background: var(--green-bg); }
+
+.week-row-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+}
+.week-num-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--paper-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--ink);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.week-row.current .week-num-badge { background: var(--accent); color: white; }
+.week-row.done .week-num-badge { background: var(--green); color: white; }
+
+.week-row-info { flex: 1; }
+.week-row-focus {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.week-row.done .week-row-focus { color: var(--green); }
+.week-row-meta {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+.week-row-arrow {
+  color: var(--ink-faint);
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+.week-row.expanded .week-row-arrow { transform: rotate(90deg); }
+
+.week-row-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
+}
+.week-row.expanded .week-row-detail { grid-template-rows: 1fr; }
+.week-row-detail-inner { overflow: hidden; }
+.week-row-detail-content {
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+}
+.week-row.done .week-row-detail-content { border-color: var(--green); }
+
+.week-detail-skills {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 12px 0 10px;
+}
+.week-detail-days { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.week-day-item {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  padding-left: 14px;
+  position: relative;
+}
+.week-day-item::before {
+  content: '·';
+  position: absolute;
+  left: 3px;
+  color: var(--accent);
+  font-size: 18px;
+  line-height: 1;
+  top: -1px;
+}
+.week-why {
+  font-size: 12px;
+  color: var(--ink-faint);
+  background: var(--paper-warm);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  line-height: 1.6;
+}
+.week-row.done .week-why { background: var(--green-bg); }
+
+.week-complete-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--accent);
+  background: white;
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+.week-complete-btn:hover { background: var(--accent); color: white; }
+.week-row.done .week-complete-btn {
+  border-color: var(--green);
+  color: var(--green);
+}
+.week-row.done .week-complete-btn:hover { background: var(--green); color: white; }
+
+/* ── TRACKER VIEW ─────────────────────────────────────────────── */
+.tracker-header {
+  margin-bottom: 24px;
+}
+.tracker-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+.tracker-sub { font-size: 13px; color: var(--ink-soft); }
+
+.tracker-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  margin-bottom: 24px;
+}
+.tracker-dot {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  background: var(--paper-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-faint);
+  transition: all 0.2s;
+  cursor: default;
+  position: relative;
+}
+.tracker-dot.done { background: var(--green); color: white; }
+.tracker-dot.current { background: var(--accent); color: white; }
+
+.tracker-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+}
+.legend-dot.done { background: var(--green); }
+.legend-dot.current { background: var(--accent); }
+.legend-dot.upcoming { background: var(--paper-mid); border: 1px solid var(--border); }
+
+/* ── FLUENCY LOG ──────────────────────────────────────────────── */
+.fluency-section { margin-bottom: 28px; }
+.fluency-entries { display: flex; flex-direction: column; gap: 6px; }
+.fluency-entry {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+.fluency-week-label {
+  font-size: 12px;
+  color: var(--ink-faint);
+  width: 52px;
+  flex-shrink: 0;
+}
+.fluency-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--paper-mid);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.fluency-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 100px;
+  transition: width 0.6s var(--ease-out);
+}
+.fluency-bar-fill.target { background: var(--ink-faint); }
+.fluency-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  width: 38px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.fluency-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.fluency-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink);
+  background: white;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.fluency-input:focus { border-color: var(--accent); }
+.fluency-input::placeholder { color: var(--ink-faint); }
+.fluency-save-btn {
+  padding: 10px 16px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.fluency-save-btn:hover { opacity: 0.85; }
+
+/* ── SESSION LOG ──────────────────────────────────────────────── */
+.session-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.log-entry {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+.log-entry-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.log-entry-date { font-size: 12px; color: var(--ink-faint); }
+.log-entry-week {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--accent-bg);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+.log-entry-note {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.log-entry-mood {
+  margin-top: 8px;
+  font-size: 20px;
+}
+
+.add-log-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--ink-faint);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 28px;
+}
+.add-log-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── LOG FORM ─────────────────────────────────────────────────── */
+.log-form {
+  display: none;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.log-form.open { display: block; animation: fadeUp 0.2s var(--ease-out); }
+.log-form-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.form-group { margin-bottom: 12px; }
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 6px;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--accent);
+  background: white;
+}
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-select { appearance: none; cursor: pointer; }
+.mood-row {
+  display: flex;
+  gap: 8px;
+}
+.mood-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+  font-size: 22px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.mood-btn.selected { border-color: var(--accent); background: var(--accent-bg); }
+.form-actions { display: flex; gap: 8px; margin-top: 14px; }
+.btn-primary {
+  flex: 1;
+  padding: 11px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-ghost {
+  padding: 11px 16px;
+  background: none;
+  color: var(--ink-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ── STRATEGIES VIEW ──────────────────────────────────────────── */
+.strategy-cards { display: flex; flex-direction: column; gap: 14px; }
+.strategy-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.strategy-card-header {
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.strategy-card-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+.strategy-card-sub {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+.strategy-card-arrow {
+  font-size: 16px;
+  transition: transform 0.2s;
+  opacity: 0.7;
+}
+.strategy-card.open .strategy-card-arrow { transform: rotate(90deg); }
+
+.strategy-card-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var(--ease-out);
+  background: white;
+}
+.strategy-card.open .strategy-card-body { grid-template-rows: 1fr; }
+.strategy-card-body-inner { overflow: hidden; }
+.strategy-card-content { padding: 0 16px 16px; border-top: 1px solid var(--border); }
+
+.strategy-card.s1 .strategy-card-header { background: #e8f3f7; color: #1d5b72; }
+.strategy-card.s2 .strategy-card-header { background: var(--accent-bg); color: var(--accent); }
+.strategy-card.s3 .strategy-card-header { background: var(--gold-bg); color: var(--gold); }
+.strategy-card.s4 .strategy-card-header { background: var(--green-bg); color: var(--green); }
+
+.strategy-steps { margin: 12px 0; display: flex; flex-direction: column; gap: 10px; }
+.strategy-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--paper-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.strategy-step p {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.strategy-example {
+  background: var(--paper-warm);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+.strategy-example-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+.strategy-example-text {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.5;
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+
+.never-do-card {
+  background: #fef6f4;
+  border: 1px solid #f4c5ba;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-top: 24px;
+}
+.never-do-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.never-do-list { display: flex; flex-direction: column; gap: 6px; }
+.never-do-item {
+  font-size: 13px;
+  color: var(--ink-soft);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+}
+.never-do-item::before {
+  content: '✕';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 10px;
+  top: 2px;
+}
+
+/* ── BOTTOM NAV ───────────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: var(--paper);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding: 8px 0 env(safe-area-inset-bottom, 8px);
+  z-index: 20;
+}
+.bottom-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.bottom-nav-icon { font-size: 20px; line-height: 1; }
+.bottom-nav-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  transition: color 0.15s;
+}
+.bottom-nav-btn.active .bottom-nav-label { color: var(--accent); }
+.bottom-nav-btn.active .bottom-nav-icon { filter: none; }
+
+/* ── MISC ─────────────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+.empty-state {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--ink-faint);
+  font-size: 13px;
+  font-style: italic;
+}
+.pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 3px 9px;
+  border-radius: 100px;
+}
+.pill.accent { background: var(--accent-bg); color: var(--accent); }
+.pill.green  { background: var(--green-bg);  color: var(--green); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-top">
+      <div class="header-title">
+        <div class="header-eyebrow">Summer 2026</div>
+        <div class="header-name">Reading Program</div>
+        <div class="header-sub" id="headerSub">Loading...</div>
+      </div>
+      <div class="overall-badge">
+        <div class="badge-num" id="overallPct">0%</div>
+        <span class="badge-label">complete</span>
+      </div>
+    </div>
+    <nav class="nav-tabs" id="topNav">
+      <button class="nav-tab active" data-page="today">Today</button>
+      <button class="nav-tab" data-page="weeks">All Weeks</button>
+      <button class="nav-tab" data-page="tracker">Progress</button>
+      <button class="nav-tab" data-page="strategies">Strategies</button>
+    </nav>
+  </header>
+
+  <!-- ── TODAY PAGE ───────────────────────────────────────────── -->
+  <div class="page active" id="page-today">
+    <div class="today-week-label" id="todayWeekLabel">Week 1 of 8</div>
+    <div class="today-focus" id="todayFocus">Loading focus...</div>
+    <div class="today-meta" id="todayMeta">Loading...</div>
+
+    <div class="week-progress">
+      <div class="progress-header">
+        <span>Today's session</span>
+        <span id="stepsCount">0 / 5 steps</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="sessionProgressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="section-label">Session Steps</div>
+    <div class="session-steps" id="sessionSteps"></div>
+
+    <div class="tip-card" id="todayTip">
+      <div class="tip-label">💡 Key Rule</div>
+      <div class="tip-text" id="todayTipText"></div>
+    </div>
+
+    <div class="section-label">Books for This Week</div>
+    <div class="books-row" id="todayBooks"></div>
+  </div>
+
+  <!-- ── WEEKS PAGE ────────────────────────────────────────────── -->
+  <div class="page" id="page-weeks">
+    <div class="section-label" style="margin-bottom:16px">8-Week Plan</div>
+    <div class="weeks-grid" id="weeksGrid"></div>
+  </div>
+
+  <!-- ── TRACKER PAGE ─────────────────────────────────────────── -->
+  <div class="page" id="page-tracker">
+    <div class="tracker-header">
+      <div class="tracker-title">Progress</div>
+      <div class="tracker-sub">Track every session and fluency over time.</div>
+    </div>
+
+    <div class="section-label">8-Week Overview</div>
+    <div class="tracker-grid" id="trackerGrid"></div>
+    <div class="tracker-legend">
+      <div class="legend-item"><div class="legend-dot done"></div> Completed</div>
+      <div class="legend-item"><div class="legend-dot current"></div> Current</div>
+      <div class="legend-item"><div class="legend-dot upcoming"></div> Upcoming</div>
+    </div>
+
+    <div class="fluency-section">
+      <div class="section-label">Fluency Log (words / min)</div>
+      <div class="fluency-entries" id="fluencyEntries"></div>
+      <div class="fluency-input-row">
+        <select class="fluency-input" id="fluencyWeekSelect" style="max-width:100px">
+          <option value="4">Week 4</option>
+          <option value="5">Week 5</option>
+          <option value="6">Week 6</option>
+          <option value="8">Week 8</option>
+        </select>
+        <input class="fluency-input" type="number" id="fluencyWpm" placeholder="e.g. 48" min="0" max="200">
+        <button class="fluency-save-btn" onclick="saveFluency()">Save</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label" style="margin-bottom:12px">Session Notes</div>
+    <button class="add-log-btn" id="addLogBtn" onclick="toggleLogForm()">
+      <span>+</span> Log a session
+    </button>
+
+    <div class="log-form" id="logForm">
+      <div class="log-form-title">How did today's session go?</div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" type="date" id="logDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Week</label>
+        <select class="form-select" id="logWeek">
+          <option value="1">Week 1</option>
+          <option value="2">Week 2</option>
+          <option value="3">Week 3</option>
+          <option value="4">Week 4</option>
+          <option value="5">Week 5</option>
+          <option value="6">Week 6</option>
+          <option value="7">Week 7</option>
+          <option value="8">Week 8</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (hard words, wins, observations)</label>
+        <textarea class="form-textarea" id="logNote" placeholder="e.g. She got 'rabbit' on her own! Struggled with 'friend'…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">How did she feel?</label>
+        <div class="mood-row" id="moodRow">
+          <button class="mood-btn" data-mood="😤" onclick="selectMood(this)">😤</button>
+          <button class="mood-btn" data-mood="😐" onclick="selectMood(this)">😐</button>
+          <button class="mood-btn" data-mood="🙂" onclick="selectMood(this)">🙂</button>
+          <button class="mood-btn" data-mood="😄" onclick="selectMood(this)">😄</button>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" onclick="saveLog()">Save</button>
+        <button class="btn-ghost" onclick="toggleLogForm()">Cancel</button>
+      </div>
+    </div>
+
+    <div class="session-log-list" id="sessionLogList"></div>
+  </div>
+
+  <!-- ── STRATEGIES PAGE ──────────────────────────────────────── -->
+  <div class="page" id="page-strategies">
+    <div class="section-label" style="margin-bottom:16px">When She Gets Stuck</div>
+    <div class="strategy-cards" id="strategyCards"></div>
+    <div class="never-do-card">
+      <div class="never-do-title">Never say these</div>
+      <div class="never-do-list">
+        <div class="never-do-item">"What word would make sense there?"</div>
+        <div class="never-do-item">"Look at the picture and guess."</div>
+        <div class="never-do-item">"Skip it and read on for clues."</div>
+        <div class="never-do-item">"Read it faster."</div>
+        <div class="never-do-item">"Just try a word that sounds right."</div>
+      </div>
+    </div>
+    <div style="margin-top:16px; padding: 14px 16px; background: var(--green-bg); border: 1px solid var(--green); border-radius: var(--radius);">
+      <div class="tip-label" style="color: var(--green)">✓ Always say instead</div>
+      <div class="tip-text">"Look at the <strong style='color:var(--green)'>letters</strong>. What sounds do you see? Let's tap it out."</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="bottom-nav-btn active" data-page="today">
+      <span class="bottom-nav-icon">☀️</span>
+      <span class="bottom-nav-label">Today</span>
+    </button>
+    <button class="bottom-nav-btn" data-page="weeks">
+      <span class="bottom-nav-icon">📋</span>
+      <span class="bottom-nav-label">Weeks</span>
+    </button>
+    <button class="bottom-nav-btn" data-page="tracker">
+      <span class="bottom-nav-icon">📈</span>
+      <span class="bottom-nav-label">Progress</span>
+    </button>
+    <button class="bottom-nav-btn" data-page="strategies">
+      <span class="bottom-nav-icon">💡</span>
+      <span class="bottom-nav-label">Strategies</span>
+    </button>
+  </nav>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const WEEKS = [
+  {
+    num: 1,
+    focus: "Silent E — Long Vowel Words",
+    focusShort: "Silent E",
+    skills: "Vowel-Consonant-E pattern (cake, ride, bone, cute, pine)",
+    days: [
+      "Warm-Up: Say 5 CVC words aloud, tap-and-say each sound (c-a-t = 3 taps)",
+      "Phonics: Teach the Magic E rule — the E at the end makes the vowel say its name",
+      "Sort: Write 10 words on cards. Sort into short vowel (hat) vs. long vowel (hate) piles",
+      "Reading: Bob Books Set 3 or any decodable reader with Silent E words",
+      "Read-Aloud: You read a Pokémon graphic novel or funny animal book to her"
+    ],
+    why: "She handles CVC reliably. Silent E is the most common long-vowel pattern she'll encounter. Concentrated exposure this week builds the brain's word-image so she recognizes it automatically later.",
+    tip: "When she sees a word like <strong>cake</strong>, point to the E and say: 'The magic E is making the A say its name. What does A say?' Then let her blend.",
+    books: [
+      { title: "Bob Books Set 3", type: "she-reads", why: "Precisely controlled — each book targets one phonics pattern. Short enough to finish in one sitting.", emoji: "📗" },
+      { title: "Elephant & Piggie (any)", type: "she-reads", why: "Simple vocabulary, funny dialogue. Great for fluency practice because she'll want to re-read it.", emoji: "📘" },
+      { title: "Pokémon Graphic Novel", type: "read-aloud", why: "Her passion = maximum engagement. You read it, she follows along and asks questions.", emoji: "⭐" }
+    ]
+  },
+  {
+    num: 2,
+    focus: "Vowel Teams — AI and AY",
+    focusShort: "AI & AY",
+    skills: "AI in the middle, AY at the end (rain, train, say, play, wait, day)",
+    days: [
+      "Warm-Up: 10 sight word flashcards — accuracy wins, not speed",
+      "Phonics: AI and AY both say long A. Rule: AI in the middle, AY at the end of the word",
+      "Activity: Word Building — use letter tiles or magnetic letters to make ai/ay words",
+      "Reading: Elephant & Piggie books for fluency — funny, decodable, she'll re-read them",
+      "Read-Aloud: Magic Tree House #1 or a funny animal story she picks"
+    ],
+    why: "Children who haven't been explicitly taught vowel teams default to guessing. Knowing 'AI in the middle, AY at the end' gives her a rule, not a guess. One rule unlocks dozens of words.",
+    tip: "If she reads 'rain' as 'ran', point to the AI and say: 'Two vowels together — the first one talks. What does A say?'",
+    books: [
+      { title: "Elephant & Piggie Series", type: "she-reads", why: "High sight word coverage, funny dialogue — great for building fluency through re-reading.", emoji: "📗" },
+      { title: "Magic Tree House #1", type: "read-aloud", why: "Adventure + animals. Rich vocabulary for listening. Ask prediction questions as you read.", emoji: "📙" },
+      { title: "Bad Guys Series", type: "read-aloud", why: "Laugh-out-loud funny. She follows along while you read — builds narrative comprehension with zero pressure.", emoji: "😂" }
+    ]
+  },
+  {
+    num: 3,
+    focus: "Vowel Teams — OA and OW",
+    focusShort: "OA & OW",
+    skills: "OA in the middle, OW at the end (boat, road, grow, snow, coat, flow)",
+    days: [
+      "Warm-Up: Review AI/AY from Week 2 using word flashcards — can she sort them in 60 seconds?",
+      "Phonics: OA (middle) and OW (end) both say long O. Same positional rule as AI/AY",
+      "Game: Word Family Memory — match pairs of rhyming long-O words (boat/coat, snow/grow)",
+      "Reading: Frog and Toad — gentle humor, manageable complexity, great for fluency timing",
+      "Read-Aloud: Introduce a slightly harder fantasy book — she listens, you read. Ask one plot question."
+    ],
+    why: "Pattern stacking builds generalization. After three vowel team weeks, she starts to notice that two vowels together usually make one long sound — a rule that transfers to words she's never seen.",
+    tip: "After she reads a sentence with an OA word, ask: 'Do you see OA in there? What does OA say?' Reinforce the pattern, not just the word.",
+    books: [
+      { title: "Frog and Toad Series", type: "she-reads", why: "Gentle humor, friendship themes. Excellent for 1-minute fluency timing starting this week.", emoji: "📗" },
+      { title: "Charlotte's Web", type: "read-aloud", why: "Animals, friendship, rich vocabulary. Read one chapter at a time. Ask about Wilbur's feelings.", emoji: "📙" },
+      { title: "Bad Guys Series", type: "read-aloud", why: "Keep the humor going — motivation is a real variable in reading success.", emoji: "😂" }
+    ]
+  },
+  {
+    num: 4,
+    focus: "Bossy R — R-Controlled Vowels",
+    focusShort: "Bossy R",
+    skills: "AR, OR, ER, IR, UR — the R changes the vowel sound (car, for, her, bird, burn)",
+    days: [
+      "Warm-Up: Silly sentence warm-up — read 3 short sentences aloud with expression",
+      "Phonics: Introduce Bossy R — when R follows a vowel, it hijacks the vowel sound entirely",
+      "Sort: 5 columns labeled AR, OR, ER, IR, UR — sort word cards. Discuss: ER/IR/UR all sound the same!",
+      "Fluency timing: She reads for 1 minute — count words correct. Write it down in the tracker.",
+      "Read-Aloud: Bad Guys or The One and Only Ivan (gorilla narrator — she'll love it)"
+    ],
+    why: "R-controlled vowels look irregular and confuse early readers. Naming it 'Bossy R' gives her a memorable hook. Learning that ER/IR/UR all say the same thing is a revelation that reduces complexity.",
+    tip: "When she hesitates on an r-controlled word, say: 'Bossy R is in there — what is that vowel + R saying?' Then have her try again.",
+    books: [
+      { title: "I Can Read! Pete the Cat", type: "she-reads", why: "Cat + humor + very decodable text. She'll want to re-read it, which builds fluency automatically.", emoji: "📗" },
+      { title: "The One and Only Ivan", type: "read-aloud", why: "Gorilla narrator, humor + heart. Great for discussing character feelings and new vocabulary words.", emoji: "📙" },
+      { title: "Biscuit Series", type: "she-reads", why: "Short sentences, controlled vocabulary, dog stories. Good for confidence on harder phonics days.", emoji: "🐕" }
+    ]
+  },
+  {
+    num: 5,
+    focus: "Chunking Long Words",
+    focusShort: "Chunk It",
+    skills: "Syllable division: cover-read-uncover-blend strategy for 2+ syllable words",
+    days: [
+      "Warm-Up: Review all vowel team flashcards from weeks 1–4 in one quick round",
+      "Phonics: Teach the Chunk It strategy — cover half the word, read the first chunk, then the second, then blend",
+      "Practice: 2-syllable words — rabbit, napkin, sunset, pencil, basket, garden. Divide and blend.",
+      "Game: Syllable Stomp — say a word, she stomps once per syllable, then reads it on a card",
+      "Echo Reading: You read a sentence with full expression, she repeats it back exactly as you said it"
+    ],
+    why: "This week targets her specific gap. She breaks down at longer words because no one has explicitly taught her to divide them into chunks. Cover-read-uncover is a strategy she can use for life.",
+    tip: "When she sees a long word, immediately say: 'Cover the second half with your thumb. Just read the first chunk.' Then: 'Now show the rest. Read that chunk. Now blend them.'",
+    books: [
+      { title: "Hi! Fly Guy (Tedd Arnold)", type: "she-reads", why: "Silly humor, bugs, simple decodable text. A reluctant-reader hit — very motivating.", emoji: "📗" },
+      { title: "Magic Tree House #1", type: "read-aloud", why: "Lots of longer words for her to hear and process through listening before she encounters them in print.", emoji: "📙" },
+      { title: "Diary of a Wimpy Kid", type: "read-aloud", why: "Laugh-out-loud funny. Read aloud together — vocabulary + narrative comprehension with zero decoding pressure.", emoji: "😂" }
+    ]
+  },
+  {
+    num: 6,
+    focus: "Fluency — Repeated Reading",
+    focusShort: "Fluency",
+    skills: "Prosody, rate, phrasing — the bridge between decoding and comprehension",
+    days: [
+      "Pick ONE short passage (4–8 sentences) from a book she already likes. Use the same passage all week.",
+      "Monday: You read it aloud with full expression. She listens and watches the page.",
+      "Tuesday: Echo read — you say one sentence, she repeats it exactly as you said it.",
+      "Wednesday: Choral read — read it together at the same time, she matches your voice.",
+      "Thursday: She reads it independently. Time her — record words correct per minute.",
+      "Friday: She performs it for someone (other parent, grandparent, stuffed animal). Celebrate."
+    ],
+    why: "Repeated reading is not boring — it is the mechanism of fluency. Each re-reading builds automaticity. By Friday, her brain has processed those words enough times that recognition is instant, freeing mental energy for comprehension.",
+    tip: "The performance on Friday is important — reading for a real audience (even a toy) engages her differently than practice. Cheer her on genuinely and specifically: 'I love how you paused there — that's exactly what good readers do.'",
+    books: [
+      { title: "Frog and Toad (revisit)", type: "she-reads", why: "She's already comfortable with this one. Familiar books are perfect for fluency work — she can focus on expression, not just decoding.", emoji: "📗" },
+      { title: "Charlotte's Web (continue)", type: "read-aloud", why: "Keep the chapter-book habit alive. Comprehension and vocabulary grow through consistent read-aloud.", emoji: "📙" },
+      { title: "Any book she loves", type: "she-reads", why: "For the fluency passage this week, let her choose the book. Her investment in the text makes a real difference.", emoji: "⭐" }
+    ]
+  },
+  {
+    num: 7,
+    focus: "Sight Words — Irregular High-Frequency Words",
+    focusShort: "Sight Words",
+    skills: "Orthographic mapping: said, come, were, their, because, friend, another, every",
+    days: [
+      "Warm-Up: 10 known sight words on flashcards — quick and confident",
+      "Instruction: Introduce 2 new irregular sight words per day. Find the 'tricky part' in each word.",
+      "Spy the Tricky Part: Look at the word, circle the irregular letters, say the whole word, write it 3 times.",
+      "Timed reading: Return to a decodable reader. Time her — she should be faster than Week 4!",
+      "Game: Sight Word Swat — write 12 words on sticky notes on the floor, she swats the one you call out"
+    ],
+    why: "Irregular words can't be fully decoded — they must be memorized. But mapping works faster when she understands which part is tricky. 'Said' = S is fine, AI is the tricky part. That analysis speeds memorization.",
+    tip: "Don't just say 'memorize this word.' Say: 'Look at SAID — the S and D follow the rules. The AI in the middle sounds like E — that's the tricky part. Now write it.' Understanding sticks better than drilling.",
+    books: [
+      { title: "Elephant & Piggie (revisit)", type: "she-reads", why: "High density of sight words in natural context. She knows this book — so she can focus on recognizing the words quickly.", emoji: "📗" },
+      { title: "Diary of a Wimpy Kid (continue)", type: "read-aloud", why: "Keep the read-aloud habit. This is as important as the phonics work — it builds her love of reading.", emoji: "😂" },
+      { title: "Pete the Cat (revisit)", type: "she-reads", why: "Another re-read for fluency and sight word automaticity. Familiar books build confidence.", emoji: "🐱" }
+    ]
+  },
+  {
+    num: 8,
+    focus: "Putting It All Together",
+    focusShort: "Comprehension",
+    skills: "Vocabulary, inference, retelling — language comprehension strand",
+    days: [
+      "Choose one picture book or short chapter from a book she loves.",
+      "Before reading: Look at the cover. Ask: 'What do you think this will be about?'",
+      "During reading: Stop at 1–2 natural moments. 'What's happening?' 'How does she feel right now?'",
+      "After reading: 'Tell me what happened — beginning, middle, and end.' (retelling)",
+      "Vocabulary: Pick 2 interesting words from the book. What do they mean? Use each in a new sentence.",
+      "CELEBRATION: She picks any book she wants and reads it TO YOU. Record a short video if she's willing."
+    ],
+    why: "By Week 8, her decoding should be more automatic, making comprehension finally accessible. The celebration reading is the most important moment of the whole program — she is now a reader who reads for someone else.",
+    tip: "For the celebration read, frame it as a gift, not a test: 'You've been working so hard all summer. I want YOU to read to ME today.' Let her pick the book, even if it's an easy one. The point is joy.",
+    books: [
+      { title: "Any book she loves", type: "she-reads", why: "Let her choose. Autonomy is a powerful motivator. Whatever she picks is the right choice.", emoji: "⭐" },
+      { title: "The One and Only Ivan", type: "read-aloud", why: "If you've been reading it, finish it this week. Endings matter for narrative comprehension and emotional connection to books.", emoji: "📙" },
+      { title: "Library visit — she picks", type: "read-aloud", why: "Take her to browse freely. A child allowed to choose always finds something that hooks her.", emoji: "📚" }
+    ]
+  }
+];
+
+const STRATEGIES = [
+  {
+    cls: "s1",
+    title: "Tap It Out",
+    sub: "For short, simple words",
+    steps: [
+      "Point to the word and say: 'Let's tap it out.'",
+      "Tap one finger per sound as you say it slowly: /c/ - /a/ - /t/",
+      "Sweep your finger under the whole word and blend it together.",
+      "Re-read the full sentence with the word in place."
+    ],
+    example: "Word: flat → tap /f/ · /l/ · /a/ · /t/ → sweep → 'flat' → re-read the sentence"
+  },
+  {
+    cls: "s2",
+    title: "Chunk It",
+    sub: "For longer, 2+ syllable words",
+    steps: [
+      "Cover the second half of the word with your thumb.",
+      "Read the first chunk only.",
+      "Slide your thumb over to reveal the second chunk. Read it.",
+      "Blend the two chunks together into the full word.",
+      "Re-read the sentence."
+    ],
+    example: "'rabbit' → cover '-bit' → read 'rab' → reveal 'bit' → blend → 'rabbit'"
+  },
+  {
+    cls: "s3",
+    title: "Find the Pattern",
+    sub: "For vowel teams and Silent E words",
+    steps: [
+      "Ask: 'Do you see two vowels together? Or a Magic E at the end?'",
+      "Remind her of the rule: Two vowels → first one talks. Magic E → vowel says its name.",
+      "Say the vowel sound aloud, then blend the whole word.",
+      "Does it sound like a real word? If not, try the other vowel sound."
+    ],
+    example: "'rain' → two vowels AI → A talks, says long A → r + ain → 'rain' ✓"
+  },
+  {
+    cls: "s4",
+    title: "Bossy R Alert",
+    sub: "For r-controlled vowels: ar, or, er, ir, ur",
+    steps: [
+      "Spot the vowel + R combination in the word.",
+      "Say: 'Bossy R is in there — what does that vowel + R say together?'",
+      "AR → 'ar' (car), OR → 'or' (for), ER/IR/UR → all say 'er' (her, bird, burn)",
+      "Blend the whole word and re-read the sentence."
+    ],
+    example: "'bird' → spot IR → Bossy R → says 'er' → b + ir + d → 'bird' ✓"
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+function loadState() {
+  const raw = localStorage.getItem('rp_state_v2');
+  if (raw) return JSON.parse(raw);
+  return {
+    currentWeek: 1,
+    completedWeeks: [],
+    sessionChecks: {},  // "weekNum_stepIdx": true
+    fluency: {},        // weekNum: wpm
+    logs: [],
+    startDate: new Date().toISOString().split('T')[0]
+  };
+}
+function saveState() { localStorage.setItem('rp_state_v2', JSON.stringify(state)); }
+let state = loadState();
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab, .bottom-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  document.querySelectorAll('[data-page="' + pageId + '"]').forEach(b => b.classList.add('active'));
+}
+
+document.querySelectorAll('[data-page]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const page = btn.dataset.page;
+    showPage(page);
+    if (page === 'tracker') renderTracker();
+  });
+});
+
+// ── SCROLL HEADER ─────────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// ── TODAY PAGE ────────────────────────────────────────────────────────────────
+function renderToday() {
+  const wk = WEEKS[state.currentWeek - 1];
+  const weeksDone = state.completedWeeks.length;
+  const totalSteps = 5; // Always 5 session segments
+
+  document.getElementById('todayWeekLabel').textContent = `Week ${state.currentWeek} of 8`;
+  document.getElementById('todayFocus').innerHTML = `This week: <em>${wk.focusShort}</em>`;
+  document.getElementById('todayMeta').textContent = `${wk.focus} · ${8 - state.currentWeek} weeks until 2nd grade`;
+
+  // Overall pct
+  const allChecks = Object.keys(state.sessionChecks).filter(k => state.sessionChecks[k]).length;
+  const maxChecks = 8 * 5;
+  const pct = Math.round((weeksDone / 8) * 100);
+  document.getElementById('overallPct').textContent = pct + '%';
+  document.getElementById('headerSub').textContent = `${weeksDone} of 8 weeks done`;
+
+  // Session steps
+  const sessionDefs = [
+    { title: "Warm-Up / Word Work", time: "5 min", desc: "Quick phonics flashcards or sight word review. Fast and fun — accuracy over speed.",
+      activities: ["Flashcard round: 10 known sight words or phonics patterns", "Say, tap, and blend: practice 5 words from this week's focus", "Magnetic letters or tile word building — keep it playful"] },
+    { title: "Phonics Instruction", time: "5 min", desc: `This week's focus: ${wk.focusShort}. One pattern only.`,
+      activities: wk.days.slice(0, 2) },
+    { title: "She Reads Aloud", time: "8 min", desc: "She reads from a decodable book. You follow along silently and use the strategies when she gets stuck.",
+      activities: ["Use Tap It Out for short unfamiliar words", "Use Chunk It for any 2-syllable word she pauses on", "Count how many words she reads — just note if it feels faster or slower than last week"] },
+    { title: "You Read to Her", time: "5 min", desc: "You read aloud from a book she loves — zero decoding pressure. Pure enjoyment and vocabulary.",
+      activities: ["Let her choose the book", "Read with expression — she's learning what fluent reading sounds like", "Ask one genuine question: 'I wonder why the character did that?'"] },
+    { title: "Celebrate", time: "2 min", desc: "Name one specific thing she did well today. Always end on something she can do successfully.",
+      activities: ["Be specific: 'I loved how you chunked that word' not just 'good job'", "Let her pick a sticker, stamp, or tiny reward if that motivates her", "Never end on a word she couldn't get — back up and read something easier first"] }
+  ];
+
+  const stepsEl = document.getElementById('sessionSteps');
+  stepsEl.innerHTML = '';
+  let completedCount = 0;
+
+  sessionDefs.forEach((step, i) => {
+    const key = `${state.currentWeek}_${i}`;
+    const done = !!state.sessionChecks[key];
+    if (done) completedCount++;
+
+    const el = document.createElement('div');
+    el.className = 'session-step' + (done ? ' completed' : '');
+    el.innerHTML = `
+      <div class="step-check">
+        <div class="check-icon">
+          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1.5" stroke="${done ? '#3a7d5a' : '#ccc'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-header">
+          <div class="step-title">${step.title}</div>
+          <div class="step-time">${step.time}</div>
+        </div>
+        <div class="step-desc">${step.desc}</div>
+        <div class="step-detail" id="detail_${i}">
+          <div class="step-detail-inner">
+            <div class="step-detail-content">
+              <div class="step-activity-label">How to do it</div>
+              <ul class="step-activity-list">
+                ${step.activities.map(a => `<li>${a}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Toggle check
+    el.querySelector('.step-check').addEventListener('click', (e) => {
+      e.stopPropagation();
+      state.sessionChecks[key] = !state.sessionChecks[key];
+      saveState();
+      renderToday();
+    });
+    // Toggle expand
+    el.querySelector('.step-body').addEventListener('click', () => {
+      const det = document.getElementById(`detail_${i}`);
+      det.classList.toggle('open');
+    });
+
+    stepsEl.appendChild(el);
+  });
+
+  // Session progress
+  document.getElementById('stepsCount').textContent = `${completedCount} / 5 steps`;
+  document.getElementById('sessionProgressFill').style.width = `${(completedCount / 5) * 100}%`;
+
+  // Tip
+  document.getElementById('todayTipText').innerHTML = wk.tip;
+
+  // Books
+  const booksEl = document.getElementById('todayBooks');
+  booksEl.innerHTML = '';
+  wk.books.forEach(book => {
+    const el = document.createElement('div');
+    el.className = 'book-card';
+    el.innerHTML = `
+      <div class="book-spine" style="background: ${book.type === 'she-reads' ? 'var(--accent-bg)' : 'var(--green-bg)'}">${book.emoji}</div>
+      <div class="book-info">
+        <div class="book-title">${book.title}</div>
+        <span class="book-type ${book.type}">${book.type === 'she-reads' ? 'She reads' : 'You read aloud'}</span>
+        <div class="book-why">${book.why}</div>
+      </div>
+    `;
+    booksEl.appendChild(el);
+  });
+}
+
+// ── WEEKS PAGE ────────────────────────────────────────────────────────────────
+function renderWeeks() {
+  const grid = document.getElementById('weeksGrid');
+  grid.innerHTML = '';
+  WEEKS.forEach(wk => {
+    const isCurrent = wk.num === state.currentWeek;
+    const isDone = state.completedWeeks.includes(wk.num);
+    const el = document.createElement('div');
+    el.className = `week-row ${isCurrent ? 'current' : ''} ${isDone ? 'done' : ''}`;
+    el.innerHTML = `
+      <div class="week-row-header">
+        <div class="week-num-badge">${wk.num}</div>
+        <div class="week-row-info">
+          <div class="week-row-focus">${wk.focus}</div>
+          <div class="week-row-meta">${isDone ? '✓ Completed' : isCurrent ? 'Current week' : 'Upcoming'}</div>
+        </div>
+        <div class="week-row-arrow">›</div>
+      </div>
+      <div class="week-row-detail">
+        <div class="week-row-detail-inner">
+          <div class="week-row-detail-content">
+            <div class="week-detail-skills">${wk.skills}</div>
+            <div class="week-detail-days">
+              ${wk.days.map(d => `<div class="week-day-item">${d}</div>`).join('')}
+            </div>
+            <div class="week-why">${wk.why}</div>
+            <button class="week-complete-btn" onclick="event.stopPropagation(); toggleWeekComplete(${wk.num})">
+              ${isDone ? '✓ Mark as not done' : 'Mark week as complete'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    el.querySelector('.week-row-header').addEventListener('click', () => {
+      el.classList.toggle('expanded');
+    });
+    grid.appendChild(el);
+  });
+}
+
+function toggleWeekComplete(num) {
+  const idx = state.completedWeeks.indexOf(num);
+  if (idx === -1) {
+    state.completedWeeks.push(num);
+    // Advance currentWeek if completing current
+    if (num === state.currentWeek && state.currentWeek < 8) {
+      state.currentWeek = Math.min(8, state.currentWeek + 1);
+    }
+  } else {
+    state.completedWeeks.splice(idx, 1);
+  }
+  saveState();
+  renderWeeks();
+  renderToday();
+}
+
+// ── TRACKER PAGE ──────────────────────────────────────────────────────────────
+function renderTracker() {
+  // Grid
+  const grid = document.getElementById('trackerGrid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= 8; i++) {
+    const isDone = state.completedWeeks.includes(i);
+    const isCurrent = i === state.currentWeek;
+    const el = document.createElement('div');
+    el.className = `tracker-dot ${isDone ? 'done' : isCurrent ? 'current' : ''}`;
+    el.textContent = i;
+    el.title = `Week ${i}: ${WEEKS[i-1].focusShort}`;
+    grid.appendChild(el);
+  }
+
+  // Fluency entries
+  const entries = document.getElementById('fluencyEntries');
+  entries.innerHTML = '';
+  const fluencyWeeks = [4, 5, 6, 8];
+  const maxWpm = 100;
+  fluencyWeeks.forEach(w => {
+    const val = state.fluency[w];
+    const el = document.createElement('div');
+    el.className = 'fluency-entry';
+    const pct = val ? Math.min((val / maxWpm) * 100, 100) : 0;
+    el.innerHTML = `
+      <div class="fluency-week-label">Week ${w}</div>
+      <div class="fluency-bar-track">
+        <div class="fluency-bar-fill" style="width:${pct}%"></div>
+      </div>
+      <div class="fluency-value">${val ? val + ' wpm' : '—'}</div>
+    `;
+    entries.appendChild(el);
+  });
+  // Target reference
+  const refEl = document.createElement('div');
+  refEl.className = 'fluency-entry';
+  refEl.innerHTML = `
+    <div class="fluency-week-label" style="color:var(--ink-faint)">Goal</div>
+    <div class="fluency-bar-track">
+      <div class="fluency-bar-fill target" style="width:70%"></div>
+    </div>
+    <div class="fluency-value" style="color:var(--ink-faint); font-size:12px">60–80 wpm</div>
+  `;
+  entries.appendChild(refEl);
+
+  // Logs
+  renderLogs();
+}
+
+function saveFluency() {
+  const week = document.getElementById('fluencyWeekSelect').value;
+  const wpm = parseInt(document.getElementById('fluencyWpm').value);
+  if (!wpm || wpm < 1) return;
+  state.fluency[week] = wpm;
+  saveState();
+  document.getElementById('fluencyWpm').value = '';
+  renderTracker();
+}
+
+// ── LOG FORM ──────────────────────────────────────────────────────────────────
+let selectedMood = '🙂';
+
+function toggleLogForm() {
+  const form = document.getElementById('logForm');
+  form.classList.toggle('open');
+  if (form.classList.contains('open')) {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('logDate').value = today;
+    document.getElementById('logWeek').value = state.currentWeek;
+    selectedMood = '🙂';
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelector('[data-mood="🙂"]').classList.add('selected');
+  }
+}
+
+function selectMood(btn) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedMood = btn.dataset.mood;
+}
+
+function saveLog() {
+  const date = document.getElementById('logDate').value;
+  const week = document.getElementById('logWeek').value;
+  const note = document.getElementById('logNote').value.trim();
+  if (!note) { document.getElementById('logNote').focus(); return; }
+  state.logs.unshift({ date, week, note, mood: selectedMood, id: Date.now() });
+  saveState();
+  document.getElementById('logNote').value = '';
+  document.getElementById('logForm').classList.remove('open');
+  renderLogs();
+}
+
+function renderLogs() {
+  const list = document.getElementById('sessionLogList');
+  list.innerHTML = '';
+  if (!state.logs.length) {
+    list.innerHTML = '<div class="empty-state">No sessions logged yet.<br>Tap "Log a session" after your first practice.</div>';
+    return;
+  }
+  state.logs.slice(0, 20).forEach(log => {
+    const el = document.createElement('div');
+    el.className = 'log-entry';
+    const d = new Date(log.date + 'T12:00:00');
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    el.innerHTML = `
+      <div class="log-entry-top">
+        <div class="log-entry-date">${dateStr}</div>
+        <div class="log-entry-week">Week ${log.week}</div>
+      </div>
+      <div class="log-entry-note">${log.note}</div>
+      <div class="log-entry-mood">${log.mood}</div>
+    `;
+    list.appendChild(el);
+  });
+}
+
+// ── STRATEGIES PAGE ───────────────────────────────────────────────────────────
+function renderStrategies() {
+  const container = document.getElementById('strategyCards');
+  container.innerHTML = '';
+  STRATEGIES.forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = `strategy-card ${s.cls}`;
+    el.innerHTML = `
+      <div class="strategy-card-header">
+        <div>
+          <div class="strategy-card-title">${s.title}</div>
+          <div class="strategy-card-sub">${s.sub}</div>
+        </div>
+        <div class="strategy-card-arrow">›</div>
+      </div>
+      <div class="strategy-card-body">
+        <div class="strategy-card-body-inner">
+          <div class="strategy-card-content">
+            <div class="strategy-steps">
+              ${s.steps.map((step, j) => `
+                <div class="strategy-step">
+                  <div class="step-num">${j+1}</div>
+                  <p>${step}</p>
+                </div>`).join('')}
+            </div>
+            <div class="strategy-example">
+              <div class="strategy-example-label">Example</div>
+              <div class="strategy-example-text">${s.example}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    el.querySelector('.strategy-card-header').addEventListener('click', () => {
+      el.classList.toggle('open');
+    });
+    container.appendChild(el);
+  });
+  // Open first by default
+  container.querySelector('.strategy-card').classList.add('open');
+}
+
+// ── SET CURRENT WEEK ──────────────────────────────────────────────────────────
+function setCurrentWeek(num) {
+  state.currentWeek = num;
+  saveState();
+  renderToday();
+  renderWeeks();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderToday();
+renderWeeks();
+renderStrategies();
+
+// Pre-render tracker silently
+setTimeout(() => {
+  const grid = document.getElementById('trackerGrid');
+  if (!grid.children.length) renderTracker();
+}, 100);
+</script>
+</body>
+</html>
